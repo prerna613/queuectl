@@ -25,19 +25,19 @@ The project is designed with modular architecture, persistent storage, and clean
 
 # Technology Stack
 
-| Component | Technology |
-|-----------|------------|
-| Runtime | Node.js |
-| Language | JavaScript |
-| CLI Framework | Commander.js |
-| Database | SQLite |
-| SQLite Library | better-sqlite3 |
-| Command Execution | child_process |
-| Logging | Winston |
-| Validation | Zod |
-| Testing | Jest |
-| Formatting | Prettier |
-| Linting | ESLint |
+| Component         | Technology     |
+| ----------------- | -------------- |
+| Runtime           | Node.js        |
+| Language          | JavaScript     |
+| CLI Framework     | Commander.js   |
+| Database          | SQLite         |
+| SQLite Library    | better-sqlite3 |
+| Command Execution | child_process  |
+| Logging           | Winston        |
+| Validation        | Zod            |
+| Testing           | Jest           |
+| Formatting        | Prettier       |
+| Linting           | ESLint         |
 
 ---
 
@@ -162,27 +162,27 @@ Responsible for:
 
 ## jobs
 
-| Column | Description |
-|----------|-------------|
-| id | Unique Job ID |
-| command | Command to execute |
-| state | Current job state |
-| attempts | Retry count |
-| max_retries | Maximum retries |
-| next_retry_at | Scheduled retry time |
-| worker_id | Assigned worker |
-| locked | Lock flag |
-| created_at | Creation timestamp |
-| updated_at | Last update timestamp |
+| Column        | Description           |
+| ------------- | --------------------- |
+| id            | Unique Job ID         |
+| command       | Command to execute    |
+| state         | Current job state     |
+| attempts      | Retry count           |
+| max_retries   | Maximum retries       |
+| next_retry_at | Scheduled retry time  |
+| worker_id     | Assigned worker       |
+| locked        | Lock flag             |
+| created_at    | Creation timestamp    |
+| updated_at    | Last update timestamp |
 
 ---
 
 ## config
 
-| Column | Description |
-|----------|-------------|
-| key | Configuration name |
-| value | Configuration value |
+| Column | Description         |
+| ------ | ------------------- |
+| key    | Configuration name  |
+| value  | Configuration value |
 
 Example:
 
@@ -343,10 +343,10 @@ delay = backoff_base ^ attempts
 Example (backoff_base = 2):
 
 | Attempt | Delay |
-|----------|-------|
-| 1 | 2 sec |
-| 2 | 4 sec |
-| 3 | 8 sec |
+| ------- | ----- |
+| 1       | 2 sec |
+| 2       | 4 sec |
+| 3       | 8 sec |
 
 ---
 
@@ -431,15 +431,15 @@ The project follows these principles:
 
 # Project Status
 
-| Phase | Status |
-|---------|--------|
-| Phase 0 - Design | ✅ Complete |
-| Phase 1 - Setup | ⏳ Pending |
-| Phase 2 - Database | ⏳ Pending |
-| Phase 3 - CLI | ⏳ Pending |
-| Phase 4 - Queue | ⏳ Pending |
-| Phase 5 - Workers | ⏳ Pending |
-| Phase 6 - Retry & DLQ | ⏳ Pending |
-| Phase 7 - Reliability | ⏳ Pending |
-| Phase 8 - Bonus Features | ⏳ Pending |
-| Phase 9 - Testing & Documentation | ⏳ Pending |
+| Phase                             | Status      |
+| --------------------------------- | ----------- |
+| Phase 0 - Design                  | ✅ Complete |
+| Phase 1 - Setup                   | ⏳ Pending  |
+| Phase 2 - Database                | ⏳ Pending  |
+| Phase 3 - CLI                     | ⏳ Pending  |
+| Phase 4 - Queue                   | ⏳ Pending  |
+| Phase 5 - Workers                 | ⏳ Pending  |
+| Phase 6 - Retry & DLQ             | ⏳ Pending  |
+| Phase 7 - Reliability             | ⏳ Pending  |
+| Phase 8 - Bonus Features          | ⏳ Pending  |
+| Phase 9 - Testing & Documentation | ⏳ Pending  |
