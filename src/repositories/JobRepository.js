@@ -53,6 +53,40 @@ class JobRepository {
       ORDER BY created_at ASC
     `).all();
   }
+  findByState(state) {
+  return db
+    .prepare(`
+      SELECT *
+      FROM jobs
+      WHERE state = ?
+      ORDER BY created_at DESC
+    `)
+    .all(state);
+}
+
+getJobCounts() {
+  const rows = db.prepare(`
+    SELECT state, COUNT(*) AS count
+    FROM jobs
+    GROUP BY state
+  `).all();
+
+  const counts = {
+    pending: 0,
+    processing: 0,
+    completed: 0,
+    failed: 0,
+    dead: 0,
+    total: 0,
+  };
+
+  for (const row of rows) {
+    counts[row.state] = row.count;
+    counts.total += row.count;
+  }
+
+  return counts;
+}
 
   update(job) {
     const stmt = db.prepare(`
