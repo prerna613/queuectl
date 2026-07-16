@@ -30,15 +30,15 @@ class WorkerManager {
     console.log(`Started ${count} worker process(es).`);
   }
 
-  stop() {
+ stop() {
     for (const child of this.processes) {
-      child.kill('SIGTERM');
+        child.kill('SIGTERM');
     }
 
     this.processes = [];
 
     console.log('All workers stopped.');
-  }
+}
 }
 
 module.exports = new WorkerManager();

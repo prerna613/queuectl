@@ -9,8 +9,11 @@ class RetryService {
     if (attempts >= job.max_retries) {
       logger.error(`Job ${job.id} moved to Dead Letter Queue`);
 
-      JobRepository.moveToDead(job.id, error);
-
+      JobRepository.moveToDead(
+       job.id,
+       attempts,
+      error
+    );
       return {
         retry: false,
         state: 'dead',

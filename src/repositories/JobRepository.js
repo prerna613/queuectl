@@ -187,13 +187,14 @@ resetLock(id) {
     );
 }
 
-  moveToDead(id, error = '') {
+  moveToDead(id, attempts, error = '') {
   const now = new Date().toISOString();
 
   return db.prepare(`
     UPDATE jobs
     SET
       state='dead',
+      attempts=?,
       locked_at=NULL,
       worker_id=NULL,
       last_error=?,
@@ -201,6 +202,7 @@ resetLock(id) {
       updated_at=?
     WHERE id=?
   `).run(
+    attempts,
     error,
     now,
     now,

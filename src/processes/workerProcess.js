@@ -6,12 +6,10 @@ const worker = new Worker(workerId);
 
 worker.start();
 
-process.on('SIGINT', () => {
-  worker.stop();
-  process.exit(0);
-});
+async function shutdown() {
+    await worker.stop();
+    process.exit(0);
+}
 
-process.on('SIGTERM', () => {
-  worker.stop();
-  process.exit(0);
-});
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
