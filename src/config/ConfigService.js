@@ -5,10 +5,14 @@ class ConfigService {
     const config = ConfigRepository.get(key);
 
     if (!config) {
-      throw new Error(`Configuration "${key}" not found.`);
+      throw new Error(`Configuration '${key}' not found.`);
     }
 
     return config.value;
+  }
+
+  getNumber(key) {
+    return Number(this.get(key));
   }
 
   getAll() {
@@ -16,11 +20,23 @@ class ConfigService {
   }
 
   set(key, value) {
-    ConfigRepository.set(key, String(value));
+    ConfigRepository.set(key, value);
   }
 
-  getNumber(key) {
-    return Number(this.get(key));
+  getMaxRetries() {
+    return this.getNumber('max_retries');
+  }
+
+  getBackoffBase() {
+    return this.getNumber('backoff_base');
+  }
+
+  getPollInterval() {
+    return this.getNumber('poll_interval');
+  }
+
+  getWorkerTimeout() {
+    return this.getNumber('worker_timeout');
   }
 }
 

@@ -1,23 +1,29 @@
 const { Command } = require('commander');
+const WorkerManager = require('../workers/WorkerManager');
 
 const command = new Command('worker');
 
 command
-  .description('Manage workers');
-
-command
   .command('start')
-  .description('Start worker processes')
   .option('-c, --count <count>', 'Number of workers', '1')
-  .action(() => {
-    console.log('Worker start will be implemented in Phase 5');
+  .action(async (options) => {
+    const count = Number(options.count);
+
+    WorkerManager.start(count);
+
+    process.on('SIGINT', async () => {
+      await WorkerManager.stop();
+      process.exit(0);
+    });
+
+    await new Promise(() => {});
   });
 
 command
   .command('stop')
-  .description('Stop all workers gracefully')
-  .action(() => {
-    console.log('Worker stop will be implemented in Phase 8');
+  .description('Gracefully stop workers')
+  .action(async () => {
+    await WorkerManager.stop();
   });
 
 module.exports = command;

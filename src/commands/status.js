@@ -1,14 +1,14 @@
 const { Command } = require('commander');
-const JobRepository = require('../repositories/JobRepository');
+const StatusService = require('../services/StatusService');
 
 const command = new Command('status');
 
 command
   .description('Show queue statistics')
   .action(() => {
-    const stats = JobRepository.getJobCounts();
+    const stats = StatusService.getQueueStatus();
 
-    console.log('\n========== Queue Status ==========\n');
+    console.log('\nQueue Status\n');
 
     console.table([
       {

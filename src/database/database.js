@@ -2,19 +2,20 @@ const Database = require('better-sqlite3');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Load environment variables
 dotenv.config();
 
-// Database path from .env
-const dbPath = process.env.DB_PATH || './queue.db';
+const dbPath = path.resolve(process.env.DB_PATH || './queue.db');
 
-// Create SQLite connection
-const db = new Database(dbPath);
+const db = new Database(dbPath, {
+  fileMustExist: false,
+});
 
-// Improve reliability
+// SQLite Configuration
 db.pragma('journal_mode = WAL');
 db.pragma('foreign_keys = ON');
+db.pragma('busy_timeout = 10000');
+db.pragma('synchronous = NORMAL');
 
-console.log(`✅ Connected to SQLite Database: ${path.resolve(dbPath)}`);
+console.log(`✅ SQLite connected: ${dbPath}`);
 
 module.exports = db;

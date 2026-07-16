@@ -1,22 +1,34 @@
 const { Command } = require('commander');
+const JobRepository = require('../repositories/JobRepository');
 
 const command = new Command('dlq');
 
-command.description('Dead Letter Queue operations');
-
 command
   .command('list')
-  .description('List all dead jobs')
+  .description('List dead letter queue jobs')
   .action(() => {
-    console.log('DLQ list will be implemented in Phase 7');
+    const jobs = JobRepository.findDeadJobs();
+
+    if (jobs.length === 0) {
+      console.log('\nNo dead jobs.\n');
+      return;
+    }
+
+    console.table(jobs);
   });
 
 command
-  .command('retry')
+  .command('retry <jobId>')
   .description('Retry a dead job')
-  .argument('<jobId>')
-  .action(() => {
-    console.log('DLQ retry will be implemented in Phase 7');
+  .action((jobId) => {
+    const result = JobRepository.retryDeadJob(jobId);
+
+    if (result.changes === 0) {
+      console.log('Job not found or not in DLQ.');
+      return;
+    }
+
+    console.log('Job moved back to pending.');
   });
 
 module.exports = command;

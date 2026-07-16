@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const runMigration = require('./database/migrate');
+const migrate = require('./database/migrate');
 const program = require('./cli/program');
 
-runMigration();
+migrate();
 
 program.parse(process.argv);

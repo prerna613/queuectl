@@ -1,19 +1,15 @@
 const { Command } = require('commander');
-const JobRepository = require('../repositories/JobRepository');
+const QueueService = require('../services/QueueService');
 
 const command = new Command('list');
 
 command
-  .description('List jobs')
-  .option('-s, --state <state>', 'Filter by job state')
+  .description('List queued jobs')
+  .option('-s, --state <state>', 'Filter jobs by state')
   .action((options) => {
-    let jobs;
-
-    if (options.state) {
-      jobs = JobRepository.findByState(options.state);
-    } else {
-      jobs = JobRepository.findAll();
-    }
+    const jobs = options.state
+      ? QueueService.getJobsByState(options.state)
+      : QueueService.getAllJobs();
 
     if (jobs.length === 0) {
       console.log('\nNo jobs found.\n');

@@ -1,23 +1,37 @@
 const { Command } = require('commander');
+const ConfigService = require('../config/ConfigService');
 
 const command = new Command('config');
 
-command.description('Configuration management');
-
 command
-  .command('get')
-  .description('Display all configuration values')
+  .command('list')
+  .description('List all configuration values')
   .action(() => {
-    console.log('Config get will be implemented in Phase 9');
+    const configs = ConfigService.getAll();
+
+    console.table(configs);
   });
 
 command
-  .command('set')
-  .description('Update a configuration value')
-  .argument('<key>')
-  .argument('<value>')
-  .action(() => {
-    console.log('Config set will be implemented in Phase 9');
+  .command('get <key>')
+  .description('Get configuration value')
+  .action((key) => {
+    try {
+      const value = ConfigService.get(key);
+
+      console.log(`${key} = ${value}`);
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
+
+command
+  .command('set <key> <value>')
+  .description('Update configuration value')
+  .action((key, value) => {
+    ConfigService.set(key, value);
+
+    console.log(`Updated ${key} = ${value}`);
   });
 
 module.exports = command;

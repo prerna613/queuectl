@@ -6,7 +6,7 @@ const command = new Command('enqueue');
 command
   .description('Add a new job to the queue')
   .requiredOption('-c, --command <command>', 'Shell command to execute')
-  .option('-r, --max-retries <number>', 'Maximum retries', '3')
+  .option('-r, --max-retries <number>', 'Maximum retry attempts')
   .action((options) => {
     try {
       const job = QueueService.enqueue(
@@ -14,7 +14,7 @@ command
         options.maxRetries
       );
 
-      console.log('\n✅ Job queued successfully\n');
+      console.log('\n✅ Job queued successfully.\n');
 
       console.table([
         {
@@ -25,8 +25,7 @@ command
         },
       ]);
     } catch (error) {
-      console.error('\n❌ Failed to enqueue job.');
-      console.error(error.message);
+      console.error(`\n❌ ${error.message}`);
     }
   });
 
