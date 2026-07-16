@@ -5,7 +5,7 @@ class ConfigService {
     const config = ConfigRepository.get(key);
 
     if (!config) {
-      throw new Error(`Configuration '${key}' not found.`);
+      throw new Error(`Unknown configuration: ${key}`);
     }
 
     return config.value;
@@ -20,6 +20,27 @@ class ConfigService {
   }
 
   set(key, value) {
+    if (!ConfigRepository.exists(key)) {
+      throw new Error(`Unknown configuration: ${key}`);
+    }
+
+    const numericFields = [
+      'max_retries',
+      'backoff_base',
+      'poll_interval',
+      'worker_timeout',
+    ];
+
+    if (numericFields.includes(key)) {
+      const number = Number(value);
+
+      if (!Number.isFinite(number) || number <= 0) {
+        throw new Error(`${key} must be a positive number.`);
+      }
+
+      value = number;
+    }
+
     ConfigRepository.set(key, value);
   }
 

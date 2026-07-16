@@ -1,5 +1,5 @@
 const os = require('os');
-
+const logger = require('../logger/logger');
 const JobRepository = require('../repositories/JobRepository');
 const ExecutorService = require('./ExecutorService');
 const RetryService = require('./RetryService');
@@ -23,8 +23,8 @@ class WorkerService {
       return;
     }
 
-    console.log(`\n[${workerId}] Processing ${job.id}`);
-    console.log(`Command: ${job.command}`);
+    logger.info(`\n[${workerId}] Processing ${job.id}`);
+    logger.info(`Command: ${job.command}`);
 
     try {
       const result = await ExecutorService.execute(job.command);
@@ -32,14 +32,14 @@ class WorkerService {
       if (result.success) {
         JobRepository.complete(job.id, result.stdout);
 
-        console.log(`[${workerId}] ✓ Completed ${job.id}`);
+        logger.info(`[${workerId}] ✓ Completed ${job.id}`);
       } else {
         const retry = RetryService.handleFailure(job, result.stderr);
 
         if (retry.state === 'dead') {
-          console.log(`[${workerId}] ✗ Moved to Dead Letter Queue`);
+          logger.info(`[${workerId}] ✗ Moved to Dead Letter Queue`);
         } else {
-          console.log(
+          logger.info(
             `[${workerId}] Retry scheduled after ${retry.retryAfter}s`
           );
         }
@@ -47,7 +47,7 @@ class WorkerService {
     } catch (error) {
       RetryService.handleFailure(job, error.message);
 
-      console.error(`[${workerId}] ${error.message}`);
+      logger.error(`[${workerId}] ${error.message}`);
     }
   }
 }

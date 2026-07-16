@@ -3,23 +3,21 @@ const ConfigService = require('../config/ConfigService');
 
 const command = new Command('config');
 
+command.description('Configuration management');
+
 command
   .command('list')
-  .description('List all configuration values')
+  .description('List all configuration')
   .action(() => {
-    const configs = ConfigService.getAll();
-
-    console.table(configs);
+    console.table(ConfigService.getAll());
   });
 
 command
   .command('get <key>')
-  .description('Get configuration value')
+  .description('Get a configuration value')
   .action((key) => {
     try {
-      const value = ConfigService.get(key);
-
-      console.log(`${key} = ${value}`);
+      console.log(`${key}: ${ConfigService.get(key)}`);
     } catch (err) {
       console.error(err.message);
     }
@@ -27,11 +25,15 @@ command
 
 command
   .command('set <key> <value>')
-  .description('Update configuration value')
+  .description('Update a configuration value')
   .action((key, value) => {
-    ConfigService.set(key, value);
+    try {
+      ConfigService.set(key, value);
 
-    console.log(`Updated ${key} = ${value}`);
+      console.log(`Updated ${key} = ${value}`);
+    } catch (err) {
+      console.error(err.message);
+    }
   });
 
 module.exports = command;

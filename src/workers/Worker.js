@@ -1,6 +1,6 @@
 const ConfigService = require('../config/ConfigService');
 const WorkerService = require('../services/WorkerService');
-
+const logger = require('../logger/logger');
 class Worker {
   constructor(id) {
     this.id = id;
@@ -14,7 +14,7 @@ class Worker {
 
     this.running = true;
 
-    console.log(`Worker ${this.id} started`);
+    logger.info(`Worker ${this.id} started`);
 
     const pollInterval = ConfigService.getPollInterval();
 
@@ -34,7 +34,7 @@ class Worker {
   stop() {
     this.running = false;
 
-    console.log(`Worker ${this.id} stopped`);
+    logger.info(`Worker ${this.id} stopped`);
   }
 }
 
