@@ -60,6 +60,9 @@ queuectl/
 ```
 
 ---
+ ## 🎥 Demo Video
+
+[Watch the Demo Video](https://drive.google.com/file/d/15Q59ORjtjmZZSQiOaUSsCx10c6hFBMkV/view?usp=sharing)
 
 # ⚙️ Setup Instructions
 
