@@ -66,7 +66,7 @@ queuectl/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/queuectl.git
+git clone https://github.com/prerna613/queuectl.git
 ```
 
 ```bash
