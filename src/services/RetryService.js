@@ -44,6 +44,9 @@ class RetryService {
       state: 'pending',
     };
   }
+   retryDeadJob(jobId) {
+    return JobRepository.retryDeadJob(jobId);
+  }
 }
 
 module.exports = new RetryService();

@@ -1,44 +1,71 @@
-const { fork } = require('child_process');
-const path = require('path');
+const { fork } = require("child_process");
+const path = require("path");
 
 class WorkerManager {
-  constructor() {
-    this.processes = [];
-  }
+    constructor() {
+        // Store all worker processes
+        this.processes = [];
 
-  start(count = 1) {
-    if (this.processes.length > 0) {
-      console.log('Workers already running.');
-      return;
+        // Register graceful shutdown only once
+        process.on("SIGINT", () => {
+            console.log("\n🛑 Received SIGINT. Stopping workers gracefully...");
+            this.stop();
+            process.exit(0);
+        });
+
+        process.on("SIGTERM", () => {
+            console.log("\n🛑 Received SIGTERM. Stopping workers gracefully...");
+            this.stop();
+            process.exit(0);
+        });
     }
 
-    const workerFile = path.join(
-      __dirname,
-      '..',
-      'processes',
-      'workerProcess.js'
-    );
+    start(count = 1) {
+        if (this.processes.length > 0) {
+            console.log("⚠ Workers are already running.");
+            return;
+        }
 
-    for (let i = 1; i <= count; i++) {
-      const child = fork(workerFile, [`worker-${i}`], {
-        stdio: 'inherit'
-      });
+        const workerFile = path.join(
+            __dirname,
+            "..",
+            "processes",
+            "workerProcess.js"
+        );
 
-      this.processes.push(child);
+        for (let i = 1; i <= count; i++) {
+            const child = fork(workerFile, [`worker-${i}`], {
+                stdio: "inherit",
+            });
+
+            this.processes.push(child);
+
+            child.on("exit", (code, signal) => {
+                console.log(
+                    `👷 Worker-${i} exited (code: ${code}, signal: ${signal})`
+                );
+            });
+        }
+
+        console.log(`✅ Started ${count} worker process(es).`);
     }
 
-    console.log(`Started ${count} worker process(es).`);
-  }
+    stop() {
+        if (this.processes.length === 0) {
+            console.log("⚠ No workers are running.");
+            return;
+        }
 
- stop() {
-    for (const child of this.processes) {
-        child.kill('SIGTERM');
+        for (const child of this.processes) {
+            if (!child.killed) {
+                child.kill("SIGTERM");
+            }
+        }
+
+        this.processes = [];
+
+        console.log("✅ All workers stopped gracefully.");
     }
-
-    this.processes = [];
-
-    console.log('All workers stopped.');
-}
 }
 
 module.exports = new WorkerManager();

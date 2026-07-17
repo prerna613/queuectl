@@ -12,9 +12,14 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.5.2",
     "better-sqlite3": "^12.11.1",
+    "boxen": "^5.1.2",
+    "chalk": "^4.1.2",
     "commander": "^15.0.0",
     "dotenv": "^17.4.2",
+    "figlet": "^1.11.2",
+    "ora": "^5.4.1",
     "uuid": "^9.0.1",
     "winston": "^3.19.0",
     "zod": "^4.4.3"
